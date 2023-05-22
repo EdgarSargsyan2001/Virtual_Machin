@@ -1,4 +1,5 @@
-decl a = 55;
+decl a;
+inc a;
 decl p = 44 - a;
 decl k = 5555 / 9;
 log p;

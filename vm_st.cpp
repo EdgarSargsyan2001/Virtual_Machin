@@ -15,6 +15,7 @@ bool change_val_variable(std::vector<std::string> &tokens);
 bool todo_arithmetic_inst(std::string &var, std::string &inst, std::string &op1, std::string &op2);
 bool assignment(std::string &var, std::string &inst, std::string &op1, std::string &op2, std::string mess); // վերագրում
 bool print_log(std::fstream &oFile, std::vector<std::string> &tokens);
+bool include_var(std::vector<std::string> &tokens);
 
 // smoll function
 bool is_arithmetic_inst(char s);
@@ -76,6 +77,11 @@ int main(int argc, char *argv[])
 		else if (tokens[0] == "log")
 		{
 			if (!print_log(oFile, tokens))
+				break;
+		}
+		else if (tokens[0] == "inc")
+		{
+			if (!include_var(tokens))
 				break;
 		}
 		// change the value of a variable
@@ -159,11 +165,12 @@ bool declaration(std::vector<std::string> &tokens)
 				return false;
 		}
 		// none init variable
-		else{
+		else
+		{
 			int a;
 			TABLE[var] = a;
 		}
-		}
+	}
 	else
 	{
 		error_message("error: variable name was not include");
@@ -285,6 +292,28 @@ bool print_log(std::fstream &oFile, std::vector<std::string> &tokens)
 		error_message("to many or few arguments");
 		return false;
 	}
+	return true;
+}
+bool include_var(std::vector<std::string> &tokens)
+{
+	if (tokens[1] != "!" && tokens[2] == "!")
+	{
+		if (TABLE.find(tokens[1]) != TABLE.end())
+		{
+			std::cin >> TABLE[tokens[1]];
+		}
+		else
+		{
+			error_message("variable not found");
+			return false;
+		}
+	}
+	else
+	{
+		error_message("to many or few arguments");
+		return false;
+	}
+
 	return true;
 }
 
